@@ -36,10 +36,10 @@
             cartTotal();
             
             // по нажатию + или - itemTotal и cartTotal пересчитывается
-            $(':button').click(clickButton);                
+            $(':button').on("click", changeQuantity);                
 
             // при ручном вводе в input itemTotal и cartTotal пересчитывается
-            $('input').on("input", changeInput);
+            $('input').on("input", changeQuantity);
                 
         });
 
@@ -53,34 +53,34 @@
                 $('span.cartTotal').text(total+' грн');
             }            
         
-// функция изменяет itemTotal и cartTotal при нажатии кнопок "+" "-"
-        function clickButton(){
-            // находим карточку изменяемого товара
-            var itemChanged = $(this).parent();
+// функция изменяет itemTotal и cartTotal при изменении количества товара
+        function changeQuantity(event){
+            $('.details').removeClass('changed');
+
+            // помечаем изменяемый товар новым классом
+             $(this).parent().addClass('changed');
 
             // узнаем его цену
-            var itemPrice = itemChanged.find('.price').text();
+            var itemPrice = $('.changed .price').text();
             
-            //увеличение/уменьшение количества в input при нажании на "+" "-"
-            var value = itemChanged.find('input').val();            
-            if(this.value=="+") {value++;}            
-            else {
-                if(value>0) {value--;}  //не дает количеству уйти в минус           
-            }            
-            itemChanged.find('input').val(value);
+            // считываем значение в input
+            var value = $('.changed input').val();            
 
+            // если событие вызвано нажатием на кнопки "+" "-" (иначе этот блок игнорируется)
+            if(event.type == 'click'){                                        
+                if(this.value=="+") {value++;}            
+                else {
+                    value--;            
+                }                 
+            }
+
+            if(value<0){ value = 0;} //не дает количеству уйти в минус 
+            $('.changed input').val(value);
+             
             // пересчитываем itemTotal
-            itemChanged.find("span.itemTotal").text(value*itemPrice);            
+            $(".changed .itemTotal").text(value*itemPrice);            
             
             //пересчитвыем total в корзине
-            cartTotal();
-        }
-        
-        function changeInput(){
-            var itemChanged = $(this).parent();
-            var value = $(this).val();         
-            var itemPrice = itemChanged.find('.price').text();            
-            itemChanged.find("span.itemTotal").text(value*itemPrice);
             cartTotal();
         }
 
@@ -94,20 +94,15 @@
             </div>
             <div class="my details">
                 <p>Kids' Crocband™ Clog</p>
-                <p class="article">
-                    <span>Art: </span>
-                    <span id="art">0001</span>
-                </p>
-                <p>
-                    <span>Цена: </span>
-                    <span class="price">1100</span>
-                    <span> грн</span>
-                </p>                              
+                <p>Art: 0001<p>
+                <span>Цена: </span>
+                <span class="price">1100</span>
+                <span> грн</span>            
                 <p>Размер: с13</p>                            
                 <input type="number" value="1" min="0">
                 <button value="+">+</button>
                 <button value="-">-</button>
-                <p class="itemTotal">
+                <p>
                     <b>Итого: </b>
                     <span class="itemTotal">1100</span>
                     <span> грн</span> 
@@ -129,7 +124,7 @@
                 <input type="number" value="1">
                 <button value="+">+</button>
                 <button value="-">-</button>
-                <p class="itemTotal">
+                <p>
                     <b>Итого: </b>
                     <span class="itemTotal">1600</span>
                     <span> грн</span> 
@@ -150,7 +145,7 @@
                 <input type="number" value="1">
                 <button value="+">+</button>
                 <button value="-">-</button>
-                <p class="itemTotal">
+                <p>
                     <b>Итого: </b>
                     <span class="itemTotal">1200</span>
                     <span> грн</span> 
