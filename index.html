@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+        }
+        .cart{
+            width: 800px;
+            margin: 0 auto;
+        }
+        .item{
+            margin-bottom: 40px;
+        }
+        .my{
+            display: inline-block;
+            margin-left: 20px;
+        }
+        input{
+            width: 50px;
+            padding: 3px;
+        }
+        p:first-child{
+            font-weight: 800;
+        } 
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){             
+            // выводим общую сумму покупки
+            cartTotal();
+            
+            // по нажатию + или - itemTotal и cartTotal пересчитывается
+            $(':button').click(clickButton);                
+
+            // при ручном вводе в input itemTotal и cartTotal пересчитывается
+            $('input').on("input", changeInput);
+                
+        });
+
+// функция считает total для всей корзины        
+            function cartTotal(){
+                var itemTotal = document.querySelectorAll('span.itemTotal');
+                var total = 0;
+                for(var i=0;i<itemTotal.length;i++){
+                    total +=  parseInt(itemTotal[i].textContent);
+                }
+                $('span.cartTotal').text(total+' грн');
+            }            
+        
+// функция изменяет itemTotal и cartTotal при нажатии кнопок "+" "-"
+        function clickButton(){
+            // находим карточку изменяемого товара
+            var itemChanged = $(this).parent();
+
+            // узнаем его цену
+            var itemPrice = itemChanged.find('.price').text();
+            
+            //увеличение/уменьшение количества в input при нажании на "+" "-"
+            var value = itemChanged.find('input').val();            
+            if(this.value=="+") {value++;}            
+            else {
+                if(value>0) {value--;}  //не дает количеству уйти в минус           
+            }            
+            itemChanged.find('input').val(value);
+
+            // пересчитываем itemTotal
+            itemChanged.find("span.itemTotal").text(value*itemPrice);            
+            
+            //пересчитвыем total в корзине
+            cartTotal();
+        }
+        
+        function changeInput(){
+            var itemChanged = $(this).parent();
+            var value = $(this).val();         
+            var itemPrice = itemChanged.find('.price').text();            
+            itemChanged.find("span.itemTotal").text(value*itemPrice);
+            cartTotal();
+        }
+
+    </script>
+</head>
+<body>
+    <div class="cart">
+        <div class="item">
+            <div class="my image">
+                <img src="images/img1.jpg">
+            </div>
+            <div class="my details">
+                <p>Kids' Crocband™ Clog</p>
+                <p class="article">
+                    <span>Art: </span>
+                    <span id="art">0001</span>
+                </p>
+                <p>
+                    <span>Цена: </span>
+                    <span class="price">1100</span>
+                    <span> грн</span>
+                </p>                              
+                <p>Размер: с13</p>                            
+                <input type="number" value="1" min="0">
+                <button value="+">+</button>
+                <button value="-">-</button>
+                <p class="itemTotal">
+                    <b>Итого: </b>
+                    <span class="itemTotal">1100</span>
+                    <span> грн</span> 
+                </p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="my image">
+                <img src="images/img2.jpg">
+            </div>
+            <div class="my details">
+                <p>Women's Crocs Isabella Gladiator Sandals</p>
+                <p>Art: 0002</p>
+                <span>Цена: </span>
+                <span class="price">1600</span>
+                <span> грн</span>  
+                <p>Размер: W8</p>
+                <input type="number" value="1">
+                <button value="+">+</button>
+                <button value="-">-</button>
+                <p class="itemTotal">
+                    <b>Итого: </b>
+                    <span class="itemTotal">1600</span>
+                    <span> грн</span> 
+                </p>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="my image">
+                <img src="images/img3.jpg">
+            </div>
+            <div class="my details">
+                <p>Kids' Swiftwater Easy-On Shoes</p>
+                <p>Art: 0003</p>
+                <span class="price">1200</span>
+                <span> грн</span> 
+                <p>Размер: J3</p>
+                <input type="number" value="1">
+                <button value="+">+</button>
+                <button value="-">-</button>
+                <p class="itemTotal">
+                    <b>Итого: </b>
+                    <span class="itemTotal">1200</span>
+                    <span> грн</span> 
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div class="cartTotal">
+            <b>Итого: </b>
+            <span class="cartTotal"></span>
+        </div>
+
+    </div>
+</body>
+</html>
