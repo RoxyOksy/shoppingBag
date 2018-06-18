@@ -35,10 +35,10 @@
             // выводим общую сумму покупки
             cartTotal();
             
-            // по нажатию + или - itemTotal и cartTotal пересчитывается
+            // по нажатию + или - itemTotal и cartTotal пересчитываются
             $(':button').on("click", changeQuantity);                
 
-            // при ручном вводе в input itemTotal и cartTotal пересчитывается
+            // при ручном вводе в input itemTotal и cartTotal пересчитываются
             $('input').on("input", changeQuantity);
                 
         });
@@ -66,7 +66,7 @@
             // считываем значение в input
             var value = $('.changed input').val();            
 
-            // если событие вызвано нажатием на кнопки "+" "-" (иначе этот блок игнорируется)
+            // если событие вызвано нажатием на кнопки "+" "-" // иначе этот блок игнорируется 
             if(event.type == 'click'){                                        
                 if(this.value=="+") {value++;}            
                 else {
@@ -80,7 +80,7 @@
             // пересчитываем itemTotal
             $(".changed .itemTotal").text(value*itemPrice);            
             
-            //пересчитвыем total в корзине
+            // пересчитвыем total в корзине
             cartTotal();
         }
 
@@ -139,6 +139,7 @@
             <div class="my details">
                 <p>Kids' Swiftwater Easy-On Shoes</p>
                 <p>Art: 0003</p>
+                <span>Цена: </span>
                 <span class="price">1200</span>
                 <span> грн</span> 
                 <p>Размер: J3</p>
